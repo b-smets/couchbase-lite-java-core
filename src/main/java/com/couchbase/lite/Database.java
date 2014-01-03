@@ -1913,7 +1913,13 @@ public class Database {
     /*************************************************************************************************/
 
     void insertAttachmentForSequence(AttachmentInternal attachment, long sequence) throws CouchbaseLiteException {
-        insertAttachmentForSequenceWithNameAndType(sequence, attachment.getName(), attachment.getContentType(), attachment.getRevpos(), attachment.getBlobKey());
+        if (attachment.getBlobKey() == null){
+            //handle 'attachments.key may not be NULL' for LargeAttachment
+            InputStream content = getAttachmentForSequence(attachment.getRevpos(), attachment.getName()).getContent();
+            insertAttachmentForSequenceWithNameAndType(content, sequence, attachment.getName(), attachment.getContentType(), attachment.getRevpos());
+        } else {
+            insertAttachmentForSequenceWithNameAndType(sequence, attachment.getName(), attachment.getContentType(), attachment.getRevpos(), attachment.getBlobKey());
+        }
     }
 
     public void insertAttachmentForSequenceWithNameAndType(InputStream contentStream, long sequence, String name, String contentType, int revpos) throws CouchbaseLiteException {
