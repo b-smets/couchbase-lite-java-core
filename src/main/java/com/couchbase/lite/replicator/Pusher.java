@@ -236,9 +236,12 @@ public class Pusher extends Replication implements Database.ChangeListener {
                                 }
                                 if(properties != null) {
                                     // Add the _revisions list:
-                                    properties.put("_revisions", db.getRevisionHistoryDict(rev));
-                                    //now add it to the docs to send
-                                    docsToSend.add(properties);
+                                    Map<String,Object> revHistoryDict = db.getRevisionHistoryDict(rev);
+                                    if (revHistoryDict != null) {
+                                        properties.put("_revisions", revHistoryDict );
+                                        //now add it to the docs to send
+                                        docsToSend.add(properties);
+                                    }
                                 }
                             }
                         }

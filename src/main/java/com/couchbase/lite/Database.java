@@ -1457,7 +1457,7 @@ public class Database {
 
     @InterfaceAudience.Private
     public static Map<String,Object> makeRevisionHistoryDict(List<RevisionInternal> history) {
-        if(history == null) {
+        if(history == null || history.size() == 0) {
             return null;
         }
 
