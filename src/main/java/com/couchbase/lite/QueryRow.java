@@ -228,10 +228,14 @@ public class QueryRow {
                 other.getDocumentProperties() == null);
         boolean documentPropertiesEqual = documentPropertiesBothNull ||
                 documentProperties.equals(other.getDocumentProperties());
+        boolean keysEqual = ((key == null) && other.getKey() == null) || key.equals(other.getKey());
+        boolean sourceDocumentIdEqual = ((sourceDocumentId == null) && (other.getSourceDocumentId() == null)) ||
+                                        sourceDocumentId.equals(other.getSourceDocumentId());
+
 
         if (database == other.database
-                && key.equals(other.getKey())
-                && sourceDocumentId.equals(other.getSourceDocumentId())
+                && keysEqual
+                && sourceDocumentIdEqual
                 && documentPropertiesEqual) {
             // If values were emitted, compare them. Otherwise we have nothing to go on so check
             // if _anything_ about the doc has changed (i.e. the sequences are different.)
